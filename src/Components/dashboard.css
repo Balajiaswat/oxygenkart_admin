@@ -1,0 +1,42 @@
+body {
+  background-color: white;
+}
+
+.mainContainer {
+  width: 100%;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+h3 {
+  text-align: center;
+  margin-top: 20px;
+}
+.sidebar {
+  width: 20%;
+  height: 100vh;
+}
+.side-button {
+  width: 90%;
+  margin: auto;
+  margin-top: 20px;
+  /* border: 1px solid green; */
+  padding: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  height: 100vh;
+  border-radius: 10px;
+}
+.mainContent {
+  border: 1px solid red;
+}
+.side-button button {
+  width: 100%;
+  padding: 10px;
+  text-align: start;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
