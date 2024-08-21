@@ -37,7 +37,7 @@ function User() {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/user/getalluser",
+        "https://oxygenkart-backend.onrender.com/user/getalluser",
         {
           method: "GET",
           headers: {
@@ -66,7 +66,7 @@ function User() {
       }
 
       const response = await fetch(
-        `https://oxy-admin-backend.onrender.com/user/logout`,
+        `https://oxygenkart-backend.onrender.com/user/logout`,
         {
           method: "GET",
           headers: {

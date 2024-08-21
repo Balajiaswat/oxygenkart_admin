@@ -33,7 +33,7 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/user/login",
+        "https://oxygenkart-backend.onrender.com/user/login",
         {
           method: "POST",
           headers: {

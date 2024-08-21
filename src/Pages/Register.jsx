@@ -25,7 +25,7 @@ const Register = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/user/register",
+        "https://oxygenkart-backend.onrender.com/user/register",
         {
           method: "POST",
           headers: {

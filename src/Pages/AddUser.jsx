@@ -93,7 +93,7 @@ function AddUser({ isOpen, onClose }) {
       }
 
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/course/add",
+        "https://oxygenkart-backend.onrender.com/course/add",
         {
           method: "POST",
           headers: {

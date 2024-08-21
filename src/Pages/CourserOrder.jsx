@@ -33,7 +33,7 @@ function CourseOrder() {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/courseOrder/get",
+        "https://oxygenkart-backend.onrender.com/courseOrder/get",
         {
           method: "GET",
           headers: {
@@ -63,7 +63,7 @@ function CourseOrder() {
     try {
       // Simulating delete operation
       const response = await fetch(
-        `https://oxy-admin-backend.onrender.com/courseOrder/delete/${orderId}`,
+        `https://oxygenkart-backend.onrender.com/courseOrder/delete/${orderId}`,
         {
           method: "DELETE",
           headers: {

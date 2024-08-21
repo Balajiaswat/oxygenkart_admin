@@ -24,7 +24,7 @@ const Notification = () => {
     setLoading(true); // Set loading to true when fetching data
     try {
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/notification/get",
+        "https://oxygenkart-backend.onrender.com/notification/get",
         {
           method: "GET",
           headers: {
@@ -54,7 +54,7 @@ const Notification = () => {
     setLoading(true); // Set loading to true when deleting
     try {
       const response = await fetch(
-        `https://oxy-admin-backend.onrender.com/notification/delete/${notificationId}`,
+        `https://oxygenkart-backend.onrender.com/notification/delete/${notificationId}`,
         {
           method: "DELETE",
           headers: {
@@ -85,7 +85,7 @@ const Notification = () => {
     setLoading(true); // Set loading to true when updating
     try {
       const response = await fetch(
-        `https://oxy-admin-backend.onrender.com/notification/update/${notificationId}`,
+        `https://oxygenkart-backend.onrender.com/notification/update/${notificationId}`,
         {
           method: "PUT",
           headers: {
@@ -145,7 +145,7 @@ const Notification = () => {
     setLoading(true); // Set loading to true when adding
     try {
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/notification/add",
+        "https://oxygenkart-backend.onrender.com/notification/add",
         {
           method: "POST",
           headers: {

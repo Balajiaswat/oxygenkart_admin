@@ -21,7 +21,7 @@ function ContactUs() {
     const fetchContacts = async () => {
       try {
         const response = await fetch(
-          "https://oxy-admin-backend.onrender.com/contactus/get",
+          "https://oxygenkart-backend.onrender.com/contactus/get",
           {
             method: "GET",
             headers: {

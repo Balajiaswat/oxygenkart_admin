@@ -22,7 +22,7 @@ function User() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/user/getalluser",
+        "https://oxygenkart-backend.onrender.com/user/getalluser",
         {
           method: "GET",
           headers: {

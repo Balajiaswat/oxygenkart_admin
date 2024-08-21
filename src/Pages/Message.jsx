@@ -36,7 +36,7 @@ function Message() {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/message/get"
+        "https://oxygenkart-backend.onrender.com/message/get"
       );
 
       if (!response.ok) {
@@ -79,7 +79,7 @@ function Message() {
 
     try {
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/message/add",
+        "https://oxygenkart-backend.onrender.com/message/add",
         {
           method: "POST",
           headers: {
@@ -135,7 +135,7 @@ function Message() {
 
     try {
       const response = await fetch(
-        `https://oxy-admin-backend.onrender.com/message/update/${editingMessage._id}`,
+        `https://oxygenkart-backend.onrender.com/message/update/${editingMessage._id}`,
         {
           method: "PUT",
           headers: {
@@ -177,7 +177,7 @@ function Message() {
   const handleDeleteMessage = async (id) => {
     try {
       const response = await fetch(
-        `https://oxy-admin-backend.onrender.com/message/delete/${id}`,
+        `https://oxygenkart-backend.onrender.com/message/delete/${id}`,
         {
           method: "DELETE",
           headers: {

@@ -45,7 +45,7 @@ function ResetPassword() {
 
       // API call to change password
       const response = await fetch(
-        `https://oxy-admin-backend.onrender.com/user/change-password/${id}`, // Replace with your actual endpoint
+        `https://oxygenkart-backend.onrender.com/user/change-password/${id}`, // Replace with your actual endpoint
         {
           method: "PUT",
           headers: {

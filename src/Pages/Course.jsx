@@ -32,7 +32,7 @@ const Course = () => {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "https://oxy-admin-backend.onrender.com/course/get",
+        "https://oxygenkart-backend.onrender.com/course/get",
         {
           headers: {
             Authorization: `${token}`,
@@ -59,7 +59,7 @@ const Course = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://oxy-admin-backend.onrender.com/course/delete/${courseId}`,
+        `https://oxygenkart-backend.onrender.com/course/delete/${courseId}`,
         {
           method: "DELETE",
           headers: {
@@ -96,7 +96,7 @@ const Course = () => {
       }
 
       const response = await fetch(
-        `hhttps://oxy-admin-backend.onrender.com/course/update/${courseId}`,
+        `https://oxygenkart-backend.onrender.com/course/update/${courseId}`,
         {
           method: "PUT",
           headers: {
