@@ -83,10 +83,10 @@ const BarChart = () => {
         <Text fontSize="2xl" fontWeight="bold">
           Statistics
         </Text>
-        <Select width="150px" placeholder="Year 2012">
-          <option value="2011">2011</option>
-          <option value="2012">2012</option>
-          <option value="2013">2013</option>
+        <Select width="150px" placeholder="Year 2024">
+          <option value="2011">2023</option>
+          <option value="2012">2022</option>
+          <option value="2013">2021</option>
         </Select>
       </Flex>
       <Bar ref={chartRef} data={data} options={options} />
