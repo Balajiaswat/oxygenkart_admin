@@ -5,6 +5,7 @@ import {
   FaUsers,
   FaChartBar,
   FaCreditCard,
+  FaComments,
 } from "react-icons/fa"; // Import appropriate icons
 import { IoIosArrowForward } from "react-icons/io";
 import { CiLocationOn } from "react-icons/ci";
@@ -39,6 +40,11 @@ const userRouteCard = [
     path: "/dashboard/courseOrder",
     icons: FaCreditCard, // Payment icon
     text: "Course Order",
+  },
+  {
+    path: "/dashboard/chatPayment",
+    icons: FaComments, // Payment icon
+    text: "Chat Payment",
   },
   {
     path: "/dashboard/notification",

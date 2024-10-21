@@ -9,6 +9,7 @@ import Course from "./Course";
 import Notification from "./Notification";
 import CourserOrder from "./CourserOrder";
 import ContactUs from "./ContactUs";
+import ChatPayment from "./ChatPayment";
 
 function Account() {
   const location = useLocation();
@@ -38,6 +39,8 @@ function Account() {
         return <Notification />;
       case "/dashboard/courseOrder":
         return <CourserOrder />;
+      case "/dashboard/chatPayment":
+        return <ChatPayment />;
       case "/dashboard/contact":
         return <ContactUs />;
       default:
