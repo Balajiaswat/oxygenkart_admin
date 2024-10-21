@@ -7,11 +7,8 @@ import {
   Tr,
   Th,
   Td,
-  Image,
   VStack,
   Spinner,
-  Center,
-  ScaleFade,
   Button,
   Flex,
 } from "@chakra-ui/react";
@@ -21,13 +18,13 @@ function CourseOrder() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(7); // Changed to itemsPerPage for consistency
-  const [totalPages, setTotalPages] = useState(0); // State to hold total pages
+  const [itemsPerPage] = useState(7); // Set number of items per page
+  const [totalPages, setTotalPages] = useState(0); // Total number of pages
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchOrders();
-  }, []); // Fetch orders on initial load
+  }, []);
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -37,7 +34,7 @@ function CourseOrder() {
         {
           method: "GET",
           headers: {
-            Authorization: `${token}`,
+            Authorization: `${token}`, // Ensure Authorization format is correct
           },
         }
       );
@@ -47,7 +44,6 @@ function CourseOrder() {
       }
 
       const data = await response.json();
-      console.log(data);
       setOrders(data.orders);
 
       setTotalPages(Math.ceil(data.orders.length / itemsPerPage));
@@ -61,13 +57,12 @@ function CourseOrder() {
 
   const handleDeleteOrder = async (orderId) => {
     try {
-      // Simulating delete operation
       const response = await fetch(
         `https://oxygenkart-backend.onrender.com/courseOrder/delete/${orderId}`,
         {
           method: "DELETE",
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: `${token}`,
           },
         }
       );
@@ -84,9 +79,7 @@ function CourseOrder() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentOrders = orders.slice(indexOfFirstItem, indexOfLastItem);
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (loading) {
     return (
@@ -95,7 +88,7 @@ function CourseOrder() {
         justifyContent="center"
         alignItems="center"
         height="100vh"
-        width={"100%"}
+        width="100%"
       >
         <Spinner size="xl" />
       </Box>
@@ -104,14 +97,14 @@ function CourseOrder() {
 
   if (error) {
     return (
-      <Box mt={"10px"} textAlign="center" width={"100%"}>
+      <Box mt="10px" textAlign="center" width="100%">
         <Box color="red.500">Error: {error}</Box>
       </Box>
     );
   }
 
   return (
-    <Box mt={"10px"} width={"100%"}>
+    <Box mt="10px" width="100%">
       <VStack spacing={4} width="100%">
         <Table variant="simple">
           <Thead>
@@ -123,45 +116,38 @@ function CourseOrder() {
               <Th>Price</Th>
               <Th>Payment Success</Th>
               <Th>Order Date</Th>
-              {/* <Th>Action</Th> */}
             </Tr>
           </Thead>
           <Tbody>
-            {currentOrders?.map((order) => (
-              <Tr key={order._id}>
+            {currentOrders.map((order) => (
+              <Tr key={order.orderId}>
                 <Td>
                   <Box display="flex" alignItems="center">
-                    {order.courseId.video ? (
+                    {order.courseMedia ? (
                       <video
                         controls
-                        src={order.courseId.video}
+                        src={order.courseMedia}
                         alt="Course Video"
                         width="250px"
                         height="auto"
                         style={{ marginRight: "30px" }}
                       />
-                    ) : null}
+                    ) : (
+                      "No Media"
+                    )}
                   </Box>
                 </Td>
-                <Td>{order.userId.email}</Td>
-                <Td>{order.userId.username}</Td>
-                <Td>{order.courseId.title}</Td>
-                <Td>${order.courseId.price}</Td>
+                <Td>{order.email}</Td>
+                <Td>{order.username}</Td>
+                <Td>{order.courseTitle}</Td>
+                <Td>₹{order.price}</Td>
                 <Td>{order.paymentSuccess ? "Yes" : "No"}</Td>
-                <Td>{new Date(order.createdAt).toLocaleDateString()}</Td>
-                {/* <Td>
-                  <Button
-                    colorScheme="red"
-                    size="sm"
-                    onClick={() => handleDeleteOrder(order._id)}
-                  >
-                    Delete
-                  </Button>
-                </Td> */}
+                <Td>{new Date(order.orderDate).toLocaleDateString()}</Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
+
         <Flex justifyContent="center" mt={4}>
           {Array.from({ length: totalPages }).map((_, index) => (
             <Button
