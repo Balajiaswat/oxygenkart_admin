@@ -38,7 +38,7 @@ const BarChart = () => {
   const fetchUserLogins = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/loggedInUser/get?year=${selectedYear}&month=${selectedMonth}`
+        `https://oxygenkart-backend.onrender.com/loggedInUser/get?year=${selectedYear}&month=${selectedMonth}`
       );
       const data = await response.json();
 
