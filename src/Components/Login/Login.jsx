@@ -50,7 +50,7 @@ const Login = () => {
 
       if (response.status === 200) {
         const responseData = await response.json();
-        console.log(responseData.user.user.admin);
+        // console.log(responseData.user.user);
         if (!responseData.user.user.admin) {
           toast.error("You are not authorized to access this page");
           return;
@@ -58,6 +58,7 @@ const Login = () => {
 
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("token", responseData.token);
+        localStorage.setItem("email", responseData.user.user.email);
         // localStorage.setItem("userId", responseData.user.userId);
         navigate("/dashboard/user"); // Adjust this based on your routing setup
       }

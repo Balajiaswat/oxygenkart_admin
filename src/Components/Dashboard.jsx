@@ -152,22 +152,23 @@ function Dashboard() {
         >
           <Flex alignItems={"center"}>
             <Image
-              src="/logo192.png"
-              borderRadius={"50%"}
-              boxSize={"35px"}
+              src="/favicon.ico" // Path to the favicon in the public folder
+              width={"35px"} // Adjust the size as needed
+              height={"35px"}
+              borderRadius={"50%"} // For a circular shape
               objectFit={"cover"}
-              alt={"Profile Image"}
+              alt={"Favicon Image"}
             />
             <Box ml={"10px"}>
               <Text fontWeight={"600"} color={"gray.700"}>
-                John Doe
+                {localStorage.getItem("email")}
               </Text>
-              <Flex alignItems={"center"}>
+              {/* <Flex alignItems={"center"}>
                 <CiLocationOn color={"gray.500"} />
                 <Text fontSize={"12px"} color={"gray.500"} ml={"5px"}>
                   New York, USA
                 </Text>
-              </Flex>
+              </Flex> */}
             </Box>
           </Flex>
         </Box>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import {
   Button,
@@ -27,13 +27,67 @@ function User() {
   const [loading, setLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const token = localStorage.getItem("token");
+  const [payments, setPayments] = useState([]);
+  const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchAllUsers();
-  }, []);
+  const fetchOrders = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "https://oxygenkart-backend.onrender.com/courseOrder/get",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
 
-  const fetchAllUsers = async () => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+
+      const data = await response.json();
+      setOrders(data.orders);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  }, [token]); // Include token as a dependency
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]); // Include fetchOrders in dependency array
+
+  // Fetch payments (memoized)
+  const fetchPayments = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "https://oxygenkart-backend.onrender.com/payment/get-All-payment",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch payments");
+      }
+
+      const data = await response.json();
+      setPayments(data.payments);
+    } catch (error) {
+      console.error("Error fetching payments:", error);
+    }
+  }, [token]); // Include token as a dependency
+
+  useEffect(() => {
+    fetchPayments();
+  }, [fetchPayments]); // Include fetchPayments in dependency array
+
+  // Fetch all users (memoized)
+  const fetchAllUsers = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(
@@ -55,18 +109,22 @@ function User() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]); // Include token as a dependency
 
+  useEffect(() => {
+    fetchAllUsers();
+  }, [fetchAllUsers]); // Include fetchAllUsers in dependency array
+
+  // Logout function
   const logout = async () => {
     try {
-      const token = localStorage.getItem("token");
       if (!token) {
         toast.error("No token found, you are not logged in.");
         return;
       }
 
       const response = await fetch(
-        `https://oxygenkart-backend.onrender.com/user/logout`,
+        "https://oxygenkart-backend.onrender.com/user/logout",
         {
           method: "GET",
           headers: {
@@ -183,14 +241,14 @@ function User() {
               padding={"10px"}
             >
               <Text fontSize={"12px"} fontFamily={"sans-serif"}>
-                Data label
+                Chat Payments
               </Text>
               <Text
                 fontSize={"22px"}
                 fontWeight={"bold"}
                 fontFamily={"sans-serif"}
               >
-                42,502
+                {payments.length}
               </Text>
               <Flex alignItems={"center"}>
                 <IoMdArrowDropup color="red" />
@@ -205,14 +263,14 @@ function User() {
               padding={"10px"}
             >
               <Text fontSize={"12px"} fontFamily={"sans-serif"}>
-                Revenue
+                Course Orders
               </Text>
               <Text
                 fontSize={"22px"}
                 fontWeight={"bold"}
                 fontFamily={"sans-serif"}
               >
-                56,201
+                {orders.length}
               </Text>
               <Flex alignItems={"center"}>
                 <IoMdArrowDropup />
