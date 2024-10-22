@@ -260,7 +260,7 @@ const Course = () => {
                   {course.description}
                 </Text>
                 <Text color="gray.600">Price : {course.price}</Text>
-                <Text color="gray.500" mt={2}>
+                {/* <Text color="gray.500" mt={2}>
                   {` Created on ${new Date(course.date).toLocaleDateString(
                     "en-US",
                     {
@@ -269,7 +269,7 @@ const Course = () => {
                       day: "numeric",
                     }
                   )}`}
-                </Text>
+                </Text> */}
                 <Flex justify="space-between" mt={4}>
                   <SlideFade in={true} offsetY="20px">
                     <Button
