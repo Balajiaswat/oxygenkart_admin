@@ -321,7 +321,7 @@ function User() {
             <Table variant="simple">
               <Thead>
                 <Tr bg="gray.100" borderRadius={"5px"}>
-                  <Th>Item</Th>
+                  <Th>Payment</Th>
                   <Th>Date</Th>
                   <Th>Price</Th>
                   <Th>Payment</Th>
@@ -331,7 +331,7 @@ function User() {
               <Tbody>
                 {currentItems.map((item) => (
                   <Tr key={item.id}>
-                    <Td>{item.type}</Td>
+                    <Td>{item.type === "CourseOrder" ? "Course" : "Chat"}</Td>
                     <Td>{new Date(item.date).toLocaleString()}</Td>
                     <Td>
                       {item.type === "CourseOrder"
