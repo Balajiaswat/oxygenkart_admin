@@ -78,7 +78,7 @@ function Dashboard() {
       <Box
         w={"18%"}
         borderRight={"1px solid #BDBDBD"}
-        height={"800px"}
+        height={"100vh"}
         display={"flex"}
         flexDirection={"column"}
         justifyContent={"space-between"}

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { Box, Flex, Select, Text } from "@chakra-ui/react";
 import {
@@ -24,18 +24,83 @@ ChartJS.register(
 const BarChart = () => {
   const chartRef = useRef(null);
 
+  // Get current year and month
+  const currentYear = new Date().getFullYear(); // Get current year
+  const currentMonth = new Date().getMonth() + 1; // Get current month (0-indexed, so add 1)
+
+  // Define state for year and month selections
+  const [selectedYear, setSelectedYear] = useState(currentYear.toString());
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth.toString()); // Set to current month
+  const [userLogins, setUserLogins] = useState([]); // State to hold fetched data
+  const [error, setError] = useState(null); // State to hold error messages
+
+  // Fetch user login data from API
+  const fetchUserLogins = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/loggedInUser/get?year=${selectedYear}&month=${selectedMonth}`
+      );
+      const data = await response.json();
+
+      if (response.ok) {
+        // Assuming the API returns user count for each month
+        const logins = Array(12).fill(0); // Initialize logins for all months
+
+        // If userCount exists, fill the corresponding month
+        if (data.userCount !== undefined) {
+          logins[selectedMonth - 1] = data.userCount; // Set the user count for the selected month
+        }
+
+        setUserLogins(logins); // Set user logins state
+        setError(null); // Reset error
+      } else {
+        setError(data.msg || "Failed to fetch user logins.");
+      }
+    } catch (error) {
+      setError("Failed to fetch user logins.");
+      console.error("Error fetching user logins:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserLogins(); // Fetch data whenever year or month is selected
+  }, [selectedYear, selectedMonth]);
+
+  // Handle the year selection change
+  const handleYearChange = (e) => {
+    setSelectedYear(e.target.value);
+  };
+
+  // Handle the month selection change
+  const handleMonthChange = (e) => {
+    setSelectedMonth(e.target.value);
+  };
+
+  // Prepare data for chart based on selected year and month
   const data = {
-    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ], // Month labels
     datasets: [
       {
-        label: "Sit Laborum",
-        data: [65, 59, 80, 81, 56, 55, 40, 45, 60, 70, 75, 85],
+        label: "User Logins",
+        data: userLogins.length ? userLogins : Array(12).fill(0), // Use fetched data or default to 0
         backgroundColor: function (context) {
           const chart = context.chart;
           const { ctx, chartArea } = chart;
 
           if (!chartArea) {
-            // This case happens on initial chart load
             return null;
           }
           const gradient = ctx.createLinearGradient(
@@ -50,10 +115,6 @@ const BarChart = () => {
         },
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
-        pointStyle: "circle", // Use circle as the point style
-        pointRadius: 5, // Set the radius of the circle
-        pointBorderColor: "rgba(54, 162, 235, 1)", // Border color of the circle
-        pointBackgroundColor: "rgba(255, 255, 255, 0.6)",
       },
     ],
   };
@@ -66,12 +127,25 @@ const BarChart = () => {
       },
       title: {
         display: true,
-        text: "Monthly Sales Data",
+        text: `User Logins in ${selectedYear}`,
+      },
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            const month = tooltipItem.label;
+            const users = tooltipItem.raw || 0; // Use raw value or 0 if undefined
+            return `${month}: ${users} user logins`;
+          },
+        },
       },
     },
     scales: {
       y: {
         beginAtZero: true,
+        title: {
+          display: true,
+          text: "Number of Logins",
+        },
       },
     },
     barThickness: 30, // Set bar thickness for larger bars
@@ -83,12 +157,42 @@ const BarChart = () => {
         <Text fontSize="2xl" fontWeight="bold">
           Statistics
         </Text>
-        <Select width="150px" placeholder="Year 2024">
-          <option value="2011">2023</option>
-          <option value="2012">2022</option>
-          <option value="2013">2021</option>
+        {/* Year Dropdown */}
+        <Select
+          width="150px"
+          value={selectedYear}
+          onChange={handleYearChange}
+          placeholder="Select Year"
+        >
+          <option value={currentYear}>{currentYear}</option>
+          <option value={currentYear - 1}>{currentYear - 1}</option>
+          <option value={currentYear - 2}>{currentYear - 2}</option>
+        </Select>
+
+        {/* Month Dropdown */}
+        <Select
+          width="150px"
+          value={selectedMonth}
+          onChange={handleMonthChange}
+          placeholder="Select Month"
+        >
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
         </Select>
       </Flex>
+      {error && <Text color="red.500">{error}</Text>}{" "}
+      {/* Display error if any */}
+      {/* Bar chart */}
       <Bar ref={chartRef} data={data} options={options} />
     </Box>
   );

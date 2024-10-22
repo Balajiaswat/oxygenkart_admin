@@ -29,7 +29,33 @@ function User() {
   const token = localStorage.getItem("token");
   const [payments, setPayments] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 5; // Number of items per page
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://oxygenkart-backend.onrender.com/payment/combine",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching payment data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -150,6 +176,14 @@ function User() {
       console.error("Logout error:", error);
     }
   };
+
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  // Get the current items to display
+  const currentItems = data.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
 
   return (
     <div style={{ width: "80%", paddingBottom: "20px" }}>
@@ -286,7 +320,7 @@ function User() {
           <Box border={"1px solid gray.100"} borderRadius={"5px"}>
             <Table variant="simple">
               <Thead>
-                <Tr bg="gray.100" borderRadius="5px">
+                <Tr bg="gray.100" borderRadius={"5px"}>
                   <Th>Item</Th>
                   <Th>Date</Th>
                   <Th>Price</Th>
@@ -295,42 +329,47 @@ function User() {
                 </Tr>
               </Thead>
               <Tbody>
-                {/* Example row */}
-                <Tr>
-                  <Td>Item 1</Td>
-                  <Td>2024-06-17</Td>
-                  <Td>$50.00</Td>
-                  <Td>
-                    <CheckCircleIcon color="green.500" ml={1} mr={2} />
-                    Transfered
-                  </Td>
-                  <Td>Completed</Td>
-                </Tr>
-                <Tr>
-                  <Td>Item 1</Td>
-                  <Td>2024-06-17</Td>
-                  <Td>$50.00</Td>
-                  <Td>
-                    <CheckCircleIcon color="green.500" ml={1} mr={2} />
-                    Transfered
-                  </Td>
-                  <Td>Completed</Td>
-                </Tr>
-                <Tr>
-                  <Td>Item 1</Td>
-                  <Td>2024-06-17</Td>
-                  <Td>$50.00</Td>
-                  <Td>
-                    <CheckCircleIcon color="green.500" ml={1} mr={2} />
-                    Transfered
-                  </Td>
-                  <Td>Completed</Td>
-                </Tr>
-                {/* Add more rows as needed */}
+                {currentItems.map((item) => (
+                  <Tr key={item.id}>
+                    <Td>{item.type}</Td>
+                    <Td>{new Date(item.date).toLocaleString()}</Td>
+                    <Td>
+                      {item.type === "CourseOrder"
+                        ? `₹${item.courseId.price}`
+                        : `₹${item.amount / 100}`}{" "}
+                      {/* Display amount in rupees */}
+                    </Td>
+                    <Td style={{ display: "flex" }}>
+                      <CheckCircleIcon color="green.500" ml={1} mr={2} />
+                      Success
+                    </Td>
+                    <Td>Completed</Td>
+                  </Tr>
+                ))}
               </Tbody>
             </Table>
+            <Flex justify="space-between" mt={4}>
+              <Button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+                isDisabled={currentPage === 0}
+              >
+                Previous
+              </Button>
+              <Button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))
+                }
+                isDisabled={currentPage >= totalPages - 1}
+              >
+                Next
+              </Button>
+            </Flex>
+            <Box mt={2}>
+              Page {currentPage + 1} of {totalPages}
+            </Box>
           </Box>
         </Box>
+
         <Box
           style={{
             boxShadow:
